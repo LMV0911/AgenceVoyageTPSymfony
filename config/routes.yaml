@@ -3,3 +3,35 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+reset_password:
+    path: /reset-password
+    controller: SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordController::request
+
+admin_dashboard:
+    path: /admin
+    controller: App\Controller\AdminController::dashboard
+    methods: GET
+
+admin_voyages:
+    path: /admin/voyages
+    controller: App\Controller\AdminController::manageVoyages
+    methods: GET
+
+admin_users:
+    path: /admin/utilisateurs
+    controller: App\Controller\AdminController::manageUsers
+    methods: GET
+
+user_profile:
+    path: /user/profile
+    controller: App\Controller\UserController::profile
+
+user_profile_edit:
+    path: /profile/edit
+    controller: App\Controller\UserController::editProfile
+    methods: ["GET", "POST"]
+
+app_banned:
+    path: /banned
+    controller: App\Controller\SecurityController::banned

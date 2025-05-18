@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+		<div class="max-w-md w-full space-y-8">
+			<div>
+				<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+					Créer un compte
+				</h2>
+			</div>
+
+			{{ form_start(registrationForm, {'attr': {'class': 'mt-8 space-y-6'}}) }}
+			<div
+				class="rounded-md shadow-sm -space-y-px">
+				<!-- Nom -->
+				<div>
+					{{ form_label(registrationForm.nom, 'Nom', {'label_attr': {'class': 'sr-only'}}) }}
+					{{ form_widget(registrationForm.nom, {'attr': {
+                        'class': 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
+                        'placeholder': 'Votre nom'
+                    }}) }}
+					{{ form_errors(registrationForm.nom) }}
+				</div>
+
+				<!-- Prénom -->
+				<div>
+					{{ form_label(registrationForm.prenom, 'Prénom', {'label_attr': {'class': 'sr-only'}}) }}
+					{{ form_widget(registrationForm.prenom, {'attr': {
+                        'class': 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
+                        'placeholder': 'Votre prénom'
+                    }}) }}
+					{{ form_errors(registrationForm.prenom) }}
+				</div>
+
+				<!-- Email -->
+				<div>
+					{{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'sr-only'}}) }}
+					{{ form_widget(registrationForm.email, {'attr': {
+                        'class': 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
+                        'placeholder': 'votre@email.com'
+                    }}) }}
+					{% if registrationForm.email.vars.errors|length > 0 %}
+						{% for error in registrationForm.email.vars.errors %}
+							{% if 'already used' in error.message or 'déjà utilisé' in error.message %}
+								<div class="text-red-600 text-sm mt-1">
+									Cet email est déjà associé à un compte. Veuillez en choisir un autre.
+								</div>
+							{% else %}
+								{{ error.message }}
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</div>
+
+				<!-- Password -->
+				<div>
+					{{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'sr-only'}}) }}
+					{{ form_widget(registrationForm.plainPassword.first, {'attr': {
+                        'class': 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
+                        'placeholder': 'Mot de passe'
+                    }}) }}
+					{{ form_errors(registrationForm.plainPassword.first) }}
+				</div>
+
+				<!-- Confirm Password -->
+				<div>
+					{{ form_label(registrationForm.plainPassword.second, 'Confirmation', {'label_attr': {'class': 'sr-only'}}) }}
+					{{ form_widget(registrationForm.plainPassword.second, {'attr': {
+                        'class': 'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
+                        'placeholder': 'Confirmez le mot de passe'
+                    }}) }}
+					{{ form_errors(registrationForm.plainPassword.second) }}
+				</div>
+			</div>
+
+			<button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+				S'inscrire
+			</button>
+			{{ form_end(registrationForm) }}
+
+			<div class="text-center">
+				<a href="{{ path('app_login') }}" class="mt-2 text-sm text-indigo-600 hover:text-indigo-500">
+					Déjà un compte ? Se connecter
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

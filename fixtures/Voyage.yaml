@@ -1,0 +1,15 @@
+App\Entity\Voyage:
+    voyage_1:
+        titre: "Découverte de Paris"
+        description: "Un voyage inoubliable à Paris."
+        prix: 1200
+        date_debut: "2025-06-01"
+        date_fin: "2025-06-10"
+        pays: "@pays_1"
+    voyage_2:
+        titre: "Aventure en Espagne"
+        description: "Explorez les merveilles de l'Espagne."
+        prix: 1500
+        date_debut: "2025-07-05"
+        date_fin: "2025-07-15"
+        pays: "@pays_2"

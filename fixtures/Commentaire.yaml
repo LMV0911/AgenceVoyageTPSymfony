@@ -1,0 +1,11 @@
+App\Entity\Commentaire:
+    commentaire_1:
+        contenu: "Super voyage, très bien organisé!"
+        created_at: "2025-06-11 10:00:00"
+        voyage: "@voyage_1"
+        auteur: "@user_1"
+    commentaire_2:
+        contenu: "La dégustation de vin était exceptionnelle."
+        created_at: "2025-06-12 12:00:00"
+        voyage: "@voyage_1"
+        auteur: "@user_admin"

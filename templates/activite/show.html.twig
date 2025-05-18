@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ activite.nom }}
+{% endblock %}
+
+{% block body %}
+	<div class="max-w-2xl mx-auto bg-white rounded shadow p-8 mt-8">
+		<h2 class="text-3xl font-bold mb-4">{{ activite.nom }}</h2>
+		<p class="mb-4">{{ activite.description }}</p>
+		<div class="mb-4">
+			<strong>Voyages proposant cette activité :</strong>
+			{% if activite.voyages|length > 0 %}
+				<ul class="list-disc list-inside">
+					{% for voyage in activite.voyages %}
+						<li>
+							<a href="{{ path('app_voyage_show', {id: voyage.id}) }}" class="text-blue-700 hover:underline">{{ voyage.titre }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<span class="text-gray-400">Aucun voyage ne propose cette activité.</span>
+			{% endif %}
+		</div>
+		<a href="{{ path('app_activite_index') }}" class="text-green-700 hover:underline">Retour à la liste des activités</a>
+	</div>
+{% endblock %}

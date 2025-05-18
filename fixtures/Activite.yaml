@@ -1,0 +1,7 @@
+App\Entity\Activite:
+    activite_1:
+        nom: "Visite guidée"
+        voyages: ["@voyage_1", "@voyage_2"]
+    activite_2:
+        nom: "Randonnée"
+        voyages: ["@voyage_2", "@voyage_3"]

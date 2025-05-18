@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs
+{% endblock %}
+
+{% block body %}
+	<div class="container mx-auto px-4 py-8">
+		<h1 class="text-2xl font-bold mb-6">Gestion des utilisateurs</h1>
+		<div class="overflow-x-auto">
+			<table class="min-w-full bg-white rounded shadow">
+				<thead>
+					<tr>
+						<th class="px-4 py-2 border-b">ID</th>
+						<th class="px-4 py-2 border-b">Nom</th>
+						<th class="px-4 py-2 border-b">Prénom</th>
+						<th class="px-4 py-2 border-b">Email</th>
+						<th class="px-4 py-2 border-b">Rôles</th>
+						<th class="px-4 py-2 border-b">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						<tr class="hover:bg-gray-50">
+							<td class="px-4 py-2 border-b">{{ user.id }}</td>
+							<td class="px-4 py-2 border-b">{{ user.nom }}</td>
+							<td class="px-4 py-2 border-b">{{ user.prenom }}</td>
+							<td class="px-4 py-2 border-b">{{ user.email }}</td>
+							<td class="px-4 py-2 border-b">{{ user.roles|join(', ') }}</td>
+							<td class="px-4 py-2 border-b">
+								<a href="{{ path('user_profile', {id: user.id}) }}" class="text-blue-600 hover:underline">Voir</a>
+								<a href="{{ path('admin_user_edit', {id: user.id}) }}" class="text-yellow-600 hover:underline ml-2">Éditer</a>
+								<form method="post" action="{{ path('admin_user_delete', {id: user.id}) }}" style="display:inline;" onsubmit="return confirm('Supprimer cet utilisateur ?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+									<button class="text-red-600 hover:underline ml-2" type="submit">Supprimer</button>
+								</form>
+								{# bouton bannir #}
+								{% if 'ROLE_BANNED' in user.roles %}
+									<form method="post" action="{{ path('admin_user_unban', {id: user.id}) }}" style="display:inline;" onsubmit="return confirm('Débannir cet utilisateur ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('unban' ~ user.id) }}">
+										<button class="text-green-600 hover:underline ml-2" type="submit">Débannir</button>
+									</form>
+								{% else %}
+									<form method="post" action="{{ path('admin_user_ban', {id: user.id}) }}" style="display:inline;" onsubmit="return confirm('Bannir cet utilisateur ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('ban' ~ user.id) }}">
+										<button class="text-red-600 hover:underline ml-2" type="submit">Bannir</button>
+									</form>
+								{% endif %}
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="px-4 py-2 text-center text-gray-500">Aucun utilisateur trouvé.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

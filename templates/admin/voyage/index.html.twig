@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des voyages
+{% endblock %}
+
+{% block body %}
+	<div class="container mx-auto px-4 py-8">
+		<h1 class="text-2xl font-bold mb-6">Gestion des voyages</h1>
+		<a href="{{ path('admin_voyage_new') }}" class="mb-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter un voyage</a>
+		<div class="overflow-x-auto">
+			<table class="min-w-full bg-white rounded shadow">
+				<thead>
+					<tr>
+						<th class="px-4 py-2 border-b">ID</th>
+						<th class="px-4 py-2 border-b">Titre</th>
+						<th class="px-4 py-2 border-b">Pays</th>
+						<th class="px-4 py-2 border-b">Prix</th>
+						<th class="px-4 py-2 border-b">Activités</th>
+						<th class="px-4 py-2 border-b">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for voyage in voyages %}
+						<tr class="hover:bg-gray-50">
+							<td class="px-4 py-2 border-b">{{ voyage.id }}</td>
+							<td class="px-4 py-2 border-b">{{ voyage.titre }}</td>
+							<td class="px-4 py-2 border-b">{{ voyage.pays.nom }}</td>
+							<td class="px-4 py-2 border-b">{{ voyage.prix }}
+								€</td>
+							<td class="px-4 py-2 border-b">
+								{% if voyage.activites|length > 0 %}
+									<ul class="list-disc list-inside">
+										{% for activite in voyage.activites %}
+											<li>{{ activite.nom }}</li>
+										{% endfor %}
+									</ul>
+								{% else %}
+									<span class="text-gray-400">Aucune</span>
+								{% endif %}
+							</td>
+							<td class="px-4 py-2 border-b">
+								<a href="{{ path('app_voyage_show', {id: voyage.id}) }}" class="text-blue-600 hover:underline">Voir</a>
+								<a href="{{ path('admin_voyage_edit', {id: voyage.id}) }}" class="text-yellow-600 hover:underline ml-2">Éditer</a>
+								<form method="post" action="{{ path('app_voyage_delete', {id: voyage.id}) }}" style="display:inline;" onsubmit="return confirm('Supprimer ce voyage ?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ voyage.id) }}">
+									<button class="text-red-600 hover:underline ml-2" type="submit">Supprimer</button>
+								</form>
+							</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="6" class="px-4 py-2 text-center text-gray-500">Aucun voyage trouvé.</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

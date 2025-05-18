@@ -1,0 +1,13 @@
+App\Entity\User:
+    user_1:
+        email: "alice@example.com"
+        roles: ["ROLE_USER"]
+        password: "$2y$13$rIM0examplehashedpassword"
+        prenom: "Alice"
+        nom: "Dupont"
+    user_admin:
+        email: "admin@example.com"
+        roles: ["ROLE_ADMIN"]
+        password: "$2y$13$adminhashedpasswordexample"
+        prenom: "Admin"
+        nom: "System"

@@ -1,0 +1,11 @@
+App\Entity\Pays:
+    pays_1:
+        nom: "France"
+    pays_2:
+        nom: "Espagne"
+    pays_3:
+        nom: "Italie"
+    pays_4:
+        nom: "Allemagne"
+    pays_5:
+        nom: "Portugal"

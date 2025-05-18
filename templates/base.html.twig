@@ -1,17 +1,65 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Agence de Voyage
+			{% endblock %}
+		</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://cdn.tailwindcss.com"></script>
+		{% block stylesheets %}{% endblock %}
+	</head>
+	<body class="bg-gray-50 min-h-screen flex flex-col">
+		<header class="bg-white shadow mb-6">
+			<nav class="container mx-auto px-4 py-3 flex items-center justify-between">
+				<a href="{{ path('app_home') }}" class="text-xl font-bold text-blue-700">Agence de Voyage</a>
+				<div class="flex items-center space-x-4">
+					{% if app.user %}
+						<span class="text-gray-700">Bonjour,
+							<span class="font-semibold">{{ app.user.prenom }}
+								{{ app.user.nom }}</span>
+						</span>
+						{% if 'ROLE_ADMIN' in app.user.roles %}
+							<a href="{{ path('admin_dashboard') }}" class="px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Admin</a>
+						{% endif %}
+						{% if 'ROLE_USER' in app.user.roles %}
+							<a href="{{ path('user_profile') }}" class="px-3 py-2 rounded bg-green-600 text-white hover:bg-green-700">Mon Profil</a>
+						{% endif %}
+						<form method="post" action="{{ logout_path('main') }}" class="inline">
+							<button type="submit" class="px-3 py-2 rounded bg-red-500 text-white hover:bg-red-600">Déconnexion</button>
+						</form>
+					{% else %}
+						<a href="{{ path('app_login') }}" class="px-3 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Connexion</a>
+					{% endif %}
+				</div>
+			</nav>
+		</header>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+		{% if is_granted('ROLE_ADMIN') %}
+			<div class="admin-menu bg-gray-800 text-white p-4">
+				<nav class="container mx-auto flex space-x-6">
+					<a href="{{ path('admin_dashboard') }}" class="hover:text-blue-400">Dashboard</a>
+					<a href="{{ path('admin_voyage_index') }}" class="hover:text-blue-400">Voyages</a>
+					<a href="{{ path('admin_user_index') }}" class="hover:text-blue-400">Utilisateurs</a>
+				</nav>
+			</div>
+		{% endif %}
+
+		<main class="flex-1 container mx-auto px-4">
+			{% if app.user and 'ROLE_BANNED' in app.user.roles %}
+				<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
+					Vous êtes banni. Merci de contacter l'administrateur.
+				</div>
+			{% else %}
+				{% block body %}{% endblock %}
+			{% endif %}
+		</main>
+
+		<footer class="bg-gray-200 text-center py-4 mt-8">
+			<span class="text-gray-600">&copy;
+				{{ "now"|date("Y") }}
+				Agence de Voyage</span>
+		</footer>
+	</body>
 </html>

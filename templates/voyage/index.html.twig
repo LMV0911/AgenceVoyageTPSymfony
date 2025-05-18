@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Voyages
+{% endblock %}
+
+{% block body %}
+	<h2 class="text-3xl font-bold text-blue-700 mb-6 text-center">Nos Voyages</h2>
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+		{% for voyage in voyages %}
+			<div class="bg-white rounded shadow p-6 flex flex-col">
+				<h3 class="text-xl font-semibold mb-2">{{ voyage.titre }}</h3>
+				<img src="{{ voyage.photo }}" alt="Photo de {{ voyage.titre }}" class="mb-4 rounded w-full h-48 object-cover">
+				<p class="mb-2 text-gray-600">{{ voyage.description|slice(0, 100) ~ '...' }}</p>
+				<p class="text-gray-700 mb-2">
+					<span class="font-semibold">Pays :</span>
+					{{ voyage.pays.nom }}</p>
+				<p class="text-gray-700 mb-2">
+					<span class="font-semibold">Prix :</span>
+					{{ voyage.prix }}
+					€</p>
+				<a href="{{ path('app_voyage_show', {id: voyage.id}) }}" class="mt-auto inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Voir détails</a>
+			</div>
+		{% else %}
+			<p class="col-span-full text-center text-gray-500">Aucun voyage disponible.</p>
+		{% endfor %}
+	</div>
+{% endblock %}

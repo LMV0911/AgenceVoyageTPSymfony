@@ -1,17 +1,39 @@
 security:
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER, ROLE_ADMIN]
+        ROLE_USER: ROLE_USER
+        ROLE_BANNED: ROLE_BANNED
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
+            custom_authenticator: App\Security\AppAuthenticator
+            logout:
+                path: /logout
+                target: /
+                # where to redirect after logout
+                # target: app_any_route
+
+            remember_me:
+                secret: "%kernel.secret%"
+                lifetime: 604800
+                path: /
+                # by default, the feature is enabled by checking a checkbox in the
+                # login form, uncomment the following line to always enable it.
+                #always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -22,8 +44,31 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # Les pages publiques (login, reset, banni)
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/activite, roles: PUBLIC_ACCESS }
+        - { path: ^/voyage, roles: PUBLIC_ACCESS }
+
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/banned, roles: PUBLIC_ACCESS }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/reset-password, roles: PUBLIC_ACCESS }
+        - { path: ^/verify, roles: PUBLIC_ACCESS }
+
+        # Admin
+        - { path: ^/admin, roles: ROLE_ADMIN }
+
+        # Profil utilisateur
+        - { path: ^/user/profile, roles: ROLE_USER }
+
+        # CRUD entités (exemple : voyages, pays, activités, commentaires)
+        - { path: ^/pays, roles: ROLE_ADMIN }
+        - { path: ^/activite, roles: ROLE_USER }
+        - { path: ^/commentaire, roles: ROLE_USER }
+
+        # Par défaut, tout le reste nécessite d'être connecté
+        - { path: ^/, roles: ROLE_USER }
 
 when@test:
     security:

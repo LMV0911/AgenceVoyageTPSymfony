@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion !
+{% endblock %}
+
+{% block body %}
+	<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200 py-12 px-4">
+		<form method="post" class="bg-white rounded-xl shadow-xl p-8 w-full max-w-md space-y-8 group">
+			{% if error %}
+				<div class="mb-4 px-4 py-2 rounded bg-red-100 text-red-700 border border-red-300 animate-pulse">
+					{{ error.messageKey|trans(error.messageData, 'security') }}
+				</div>
+			{% endif %}
+
+			{% if app.user %}
+				<div class="mb-4 p-4 rounded bg-green-100 text-green-700 border-green-300 border">
+					Vous êtes connecté en tant que
+					<strong>{{ app.user.userIdentifier }}</strong>
+					<form method="post" action="{{ logout_path('main') }}" class="inline">
+						<button type="submit" class="ml-2 px-3 py-2 rounded bg-red-500 text-white hover:bg-red-600 transition">Déconnexion</button>
+					</form>
+				</div>
+			{% endif %}
+
+			<h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Veuillez vous connecter</h1>
+
+			<!-- Email Field -->
+			<div class="relative">
+				<input type="email" name="email" id="inputEmail" value="{{ last_username }}" class="peer w-full border border-gray-300 rounded px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition placeholder-transparent" placeholder=" " autocomplete="email" required autofocus/>
+				<label for="inputEmail" class="absolute left-4 top-2 text-gray-500 text-sm pointer-events-none transition-all duration-200
+																					peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+																					peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-600">
+					Email
+				</label>
+			</div>
+
+			<!-- Password Field -->
+			<div class="relative">
+				<input type="password" name="password" id="inputPassword" class="peer w-full border border-gray-300 rounded px-4 pt-6 pb-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition placeholder-transparent" placeholder=" " autocomplete="current-password" required/>
+				<label for="inputPassword" class="absolute left-4 top-2 text-gray-500 text-sm pointer-events-none transition-all duration-200
+																					peer-placeholder-shown:top-5 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400
+																					peer-focus:top-2 peer-focus:text-sm peer-focus:text-indigo-600">
+					Mot de passe
+				</label>
+			</div>
+
+			<input
+			type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+			<!-- Remember me -->
+			<div class="flex items-center">
+				<input id="remember" name="_remember_me" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 transition">
+				<label for="remember" class="ml-2 block text-gray-700">Se souvenir de moi</label>
+			</div>
+
+			<button class="w-full py-3 rounded bg-indigo-600 text-white font-semibold text-lg shadow hover:bg-indigo-700 transition group-hover:scale-105 group-hover:shadow-lg" type="submit">
+				Se connecter
+			</button>
+
+			<div class="text-center mt-6">
+				<p class="text-gray-600">
+					Pas encore de compte ?
+					<a href="{{ path('app_register') }}" class="text-indigo-600 hover:text-indigo-800 font-semibold transition-colors">
+						Créer un compte
+					</a>
+				</p>
+			</div>
+		</p>
+	</div>
+</form></div>{% endblock %}
